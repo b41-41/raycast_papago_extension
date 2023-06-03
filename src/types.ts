@@ -1,6 +1,6 @@
 export interface Preferences {
-  lang1: string;
-  lang2: string;
+  source: string;
+  target: string;
   clientId: string;
   clientSecret: string;
 }

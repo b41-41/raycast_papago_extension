@@ -21,7 +21,7 @@
   ],
   "preferences": [
     {
-      "name": "lang1",
+      "name": "source",
       "type": "dropdown",
       "required": true,
       "title": "First Language",
@@ -467,7 +467,7 @@
       "description": "First language"
     },
     {
-      "name": "lang2",
+      "name": "target",
       "type": "dropdown",
       "required": true,
       "default": "en",
