@@ -23,7 +23,7 @@ const useTranslateText = (props: Props) => {
           })
         )
         .then((res) => {
-          return res.data.message.result.translatedText;
+          return res?.data?.message?.result?.translatedText || "";
         });
     } catch (e: any) {
       showToast(Toast.Style.Failure, "Could not translate", e);
