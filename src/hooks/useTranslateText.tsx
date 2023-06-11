@@ -12,23 +12,29 @@ const useTranslateText = () => {
   const getDetectLangs = useGetDetectLangs();
   const { source: userSelectSource, target } = preferences;
 
+  const detectTarget = ({ sourceLang, target }: Record<string, string | undefined>) => {
+    if (sourceLang === target) return "en";
+    return target;
+  };
+
   const debouncedTranslate = debounce(async (text, resolve, reject) => {
-    const detectLang = () => {
+    const detectLang = async () => {
       if (userSelectSource === "auto") {
-        // return getDetectLangs(text);
-        return "en";
+        const detectedLang = await getDetectLangs(text);
+        return detectedLang;
       } else {
         return userSelectSource;
       }
     };
 
     try {
+      const sourceLang = await detectLang();
       const response = await apiInstance.post(
         "/n2mt",
         qs.stringify({
           text,
-          source: detectLang(),
-          target,
+          source: sourceLang,
+          target: detectTarget({ sourceLang, target }),
         })
       );
 
