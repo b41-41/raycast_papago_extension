@@ -1,20 +1,18 @@
 import qs from "qs";
 import { apiInstance } from "../api/axios";
-import { Query } from "../types";
+import { SearchText } from "../types";
 import { Toast, showToast } from "@raycast/api";
 
 const useGetDetectLangs = () => {
-  const getDetectLangs = async (query: Query) => {
+  const getDetectLangs = async (searchText: SearchText) => {
     try {
-      apiInstance.post("/detectLangs", qs.stringify({ query: query })).then((res) => {
-        return res?.data?.langCode || "en";
-      });
+      const res = await apiInstance.post("/detectLangs", qs.stringify({ query: searchText }));
+      return (res?.data?.langCode as string) || "en";
     } catch (e: any) {
       showToast(Toast.Style.Failure, "Could not detect the language", e);
     }
-
-    return getDetectLangs;
   };
+  return getDetectLangs;
 };
 
 export default useGetDetectLangs;
