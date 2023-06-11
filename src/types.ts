@@ -19,4 +19,4 @@ export interface N2MTResponse {
   };
 }
 
-export type Query = string;
+export type SearchText = string;
