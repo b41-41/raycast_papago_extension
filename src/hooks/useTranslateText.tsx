@@ -13,7 +13,13 @@ const useTranslateText = () => {
   const { source: userSelectSource, target } = preferences;
 
   const detectTarget = ({ sourceLang, target }: Record<string, string | undefined>) => {
-    if (sourceLang === target) return "en";
+    //when same first Language and second Language
+    if (sourceLang === target) {
+      //change korean when both lanaguage is english
+      if (target === "en") return "ko";
+      //basic translate language is english.
+      return "en";
+    }
     return target;
   };
 
