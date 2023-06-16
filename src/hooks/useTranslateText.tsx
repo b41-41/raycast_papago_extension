@@ -1,16 +1,18 @@
 import qs from "qs";
-import { Toast, getPreferenceValues, showToast } from "@raycast/api";
+import { Toast, getPreferenceValues, openExtensionPreferences, showToast } from "@raycast/api";
 import { Preferences, SearchText } from "../types";
 import { apiInstance } from "../api/axios";
 import useGetDetectLangs from "./useGetDetectLangs";
-import { useState } from "react";
 import debounce from "lodash/debounce";
+import { useIsErrorCodeWrite, useIsLoadingAtom } from "../atoms/status";
 
 const preferences = getPreferenceValues<Preferences>();
 
 const useTranslateText = () => {
   const getDetectLangs = useGetDetectLangs();
   const { source: userSelectSource, target } = preferences;
+  const [_, setIsLoading] = useIsLoadingAtom();
+  const setIsErrorCode = useIsErrorCodeWrite();
 
   const detectTarget = ({ sourceLang, target }: Record<string, string | undefined>) => {
     //when same first Language and second Language
@@ -48,7 +50,8 @@ const useTranslateText = () => {
       resolve(result);
     } catch (e: any) {
       showToast(Toast.Style.Failure, "Could not translate", e);
-      reject(e);
+      setIsLoading(false);
+      setIsErrorCode(Number(e?.response?.status));
     }
   }, 300);
 
